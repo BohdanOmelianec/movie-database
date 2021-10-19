@@ -79,6 +79,13 @@ class CharList extends Component {
             error: true
         })
     }
+    
+    filterMovies = arr => {
+        if(this.props.selectedGenre) { 
+            return arr.filter(movie => movie.genres.includes(+this.props.selectedGenre))
+        }
+        return arr
+    }
 
 
     renderMovies = (arr) => {
@@ -108,7 +115,10 @@ class CharList extends Component {
 
     render() {
         const {movies, page, loading, error} = this.state;
-        const items = this.renderMovies(movies);
+        
+
+        const items = this.renderMovies(this.filterMovies(movies));
+        
         const errorMessage = error ? <ErrorMessage/> : null;
         const spinner = loading ? <Spinner/> : null;
         const content = !(loading || error) ? items : null;

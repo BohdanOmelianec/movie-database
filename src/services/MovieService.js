@@ -35,8 +35,7 @@ class MovieService {
 
     getGenres = async () => {
         const res = await this.getResource(`${this._genresBase}?${this._apiKey}`)
-        const resu = await res.genres.map(genre => genre.name);
-        console.log(resu)
+        return res.genres;
     }
 
     _transformMovies = (movie) => {
@@ -44,7 +43,8 @@ class MovieService {
             id: movie.id,
             title: movie.title,
             poster: this._posterBase + movie.poster_path,
-            release: movie.release_date
+            release: movie.release_date,
+            genres: movie.genre_ids ? movie.genre_ids : null,
         }
     }
 

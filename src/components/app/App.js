@@ -11,12 +11,19 @@ import decoration from '../../resources/img/vision.png';
 class App extends Component {
     state = {
         selectedMovie: null,
+        selectedGenre: '',
         searchStr: ''
     }
 
     onMovieSelected = (item) => {
         this.setState({
             selectedMovie: item
+        })
+    }
+
+    onGenreSelected = (e) => {
+        this.setState({
+            selectedGenre: e.target.value
         })
     }
 
@@ -31,12 +38,15 @@ class App extends Component {
                 <AppHeader/>
                 <div className="searchPanel">
                     <SearchPanel onSearch={this.onSearch} searchStr={this.state.searchStr} />
-                    <AppFilter />
+                    <AppFilter onGenreSelected={this.onGenreSelected} />
                 </div>
                 <main>
                     <div className="char__content">
                         <ErrorBoundary>
-                           <CharList onMovieSelected={this.onMovieSelected} searchStr={this.state.searchStr} /> 
+                           <CharList 
+                            onMovieSelected={this.onMovieSelected}
+                            searchStr={this.state.searchStr}
+                            selectedGenre={this.state.selectedGenre} /> 
                         </ErrorBoundary>
                         
                         <ErrorBoundary>
