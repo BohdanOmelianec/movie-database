@@ -35,7 +35,8 @@ class MovieService {
         return {
             id: movie.id,
             title: movie.title,
-            poster: this._posterBase + movie.poster_path
+            poster: this._posterBase + movie.poster_path,
+            release: movie.release_date
         }
     }
 

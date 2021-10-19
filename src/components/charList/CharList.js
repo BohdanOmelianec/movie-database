@@ -5,6 +5,8 @@ import ErrorMessage from '../errorMessage/ErrorMessage';
 import Spinner from '../spinner/Spinner';
 // import PropTypes from 'prop-types';
 
+import posterNotFound from '../../resources/img/movie-poster-coming-soon.png'
+
 class CharList extends Component {
     state = {
         movies: [],
@@ -32,7 +34,7 @@ class CharList extends Component {
 
     onMoviesLoaded = (movies) => {
         this.setState({
-            movies,
+            movies: movies.sort((a, b) => (a.release < b.release) ? -1 : 1).reverse(),
             loading: false,
             page: this.state.page + 1
         })
@@ -67,7 +69,9 @@ class CharList extends Component {
 
     renderMovies = (arr) => {
         const items = arr.map((movie) => {
-            
+            if(movie.poster === 'https://image.tmdb.org/t/p/w500null') {
+                movie.poster = posterNotFound;
+            }
             return (
                 <li 
                     className="char__item"
