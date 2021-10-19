@@ -1,7 +1,8 @@
 class MovieService {
     _apiBase = 'https://api.themoviedb.org/3/movie/';
     _posterBase = 'https://image.tmdb.org/t/p/w500';
-    _searchBase = 'https://api.themoviedb.org/3/search/movie'
+    _searchBase = 'https://api.themoviedb.org/3/search/movie';
+    _genresBase = 'https://api.themoviedb.org/3/genre/movie/list';
     _apiKey = 'api_key=f1137cbdf4e49f5e77f6cd84d2971b53';
 
 
@@ -30,6 +31,12 @@ class MovieService {
         const res = await this.getResource(`${this._searchBase}?${this._apiKey}&query=${string}&page=${page}`)
         console.log(res)
         return res.results.map(this._transformMovies);
+    }
+
+    getGenres = async () => {
+        const res = await this.getResource(`${this._genresBase}?${this._apiKey}`)
+        const resu = await res.genres.map(genre => genre.name);
+        console.log(resu)
     }
 
     _transformMovies = (movie) => {

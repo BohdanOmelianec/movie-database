@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import AppHeader from "../appHeader/AppHeader";
 import SearchPanel from '../searchPanel/SearchPanel';
+import AppFilter from '../appFilter/AppFilter';
 import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
 import ErrorBoundary from '../errorBoundary/ErrorBoundary';
@@ -28,9 +29,9 @@ class App extends Component {
         return (
             <div className="app">
                 <AppHeader/>
-                <div className="search-panel">
+                <div className="searchPanel">
                     <SearchPanel onSearch={this.onSearch} searchStr={this.state.searchStr} />
-                    {/* <AppFilter filter={filter} onFilterSelect={this.onFilterSelect}/> */}
+                    <AppFilter />
                 </div>
                 <main>
                     <div className="char__content">
