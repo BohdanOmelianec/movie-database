@@ -28,7 +28,7 @@ class CharList extends Component {
 
         if(this.props.searchStr !== prevProps.searchStr) {
             this.onMoviesListLoading();
-            this.onSearchMovies(this.props.searchStr);
+            this.onSearchMovies(this.props.searchStr, this.state.page);
         }
     }
 
@@ -36,7 +36,7 @@ class CharList extends Component {
         this.setState({
             movies: movies.sort((a, b) => (a.release < b.release) ? -1 : 1).reverse(),
             loading: false,
-            page: this.state.page + 1
+            newItemLoading: false
         })
     }
 
@@ -47,16 +47,30 @@ class CharList extends Component {
     }
 
     onRequest = (page) => {
-        this.onMoviesListLoading();
-        this.movieService.getPopularMovies(page)
+        if(this.props.searchStr) {
+            this.onMoviesListLoading();
+            this.onChangePage();
+            this.onSearchMovies(this.props.searchStr, page + 1)
+        } else {
+            this.onMoviesListLoading();
+            this.onChangePage();
+            this.movieService.getPopularMovies(page + 1)
+                .then(this.onMoviesLoaded)
+                .catch(this.onError) 
+        }
+        
+    }
+
+    onSearchMovies = (searchStr, page) => {
+        this.movieService.searchMovie(searchStr, page)
             .then(this.onMoviesLoaded)
             .catch(this.onError)
     }
 
-    onSearchMovies = (searchStr) => {
-        this.movieService.searchMovie(searchStr)
-            .then(this.onMoviesLoaded)
-            .catch(this.onError)
+    onChangePage = () => {
+        this.setState({
+            page: this.state.page + 1
+        })
     }
 
     onError = () => {

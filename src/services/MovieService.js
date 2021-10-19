@@ -26,8 +26,9 @@ class MovieService {
         return this._transformMovie(res)
     }
 
-    searchMovie = async (string) => {
-        const res = await this.getResource(`${this._searchBase}?${this._apiKey}&query=${string}`)
+    searchMovie = async (string, page=1) => {
+        const res = await this.getResource(`${this._searchBase}?${this._apiKey}&query=${string}&page=${page}`)
+        console.log(res)
         return res.results.map(this._transformMovies);
     }
 
