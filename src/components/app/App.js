@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import AppHeader from "../appHeader/AppHeader";
+import SearchPanel from '../searchPanel/SearchPanel';
 import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
 import ErrorBoundary from '../errorBoundary/ErrorBoundary';
@@ -8,7 +9,8 @@ import decoration from '../../resources/img/vision.png';
 
 class App extends Component {
     state = {
-        selectedMovie: null
+        selectedMovie: null,
+        searchStr: ''
     }
 
     onMovieSelected = (item) => {
@@ -17,14 +19,23 @@ class App extends Component {
         })
     }
 
+    onSearch = (e) => {
+        const searchStr = e.target.value;
+        this.setState({searchStr});
+    }
+
     render() {
         return (
             <div className="app">
                 <AppHeader/>
+                <div className="search-panel">
+                    <SearchPanel onSearch={this.onSearch} searchStr={this.state.searchStr} />
+                    {/* <AppFilter filter={filter} onFilterSelect={this.onFilterSelect}/> */}
+                </div>
                 <main>
                     <div className="char__content">
                         <ErrorBoundary>
-                           <CharList onMovieSelected={this.onMovieSelected} /> 
+                           <CharList onMovieSelected={this.onMovieSelected} searchStr={this.state.searchStr} /> 
                         </ErrorBoundary>
                         
                         <ErrorBoundary>

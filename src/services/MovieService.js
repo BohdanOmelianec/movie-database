@@ -1,6 +1,7 @@
 class MovieService {
     _apiBase = 'https://api.themoviedb.org/3/movie/';
     _posterBase = 'https://image.tmdb.org/t/p/w500';
+    _searchBase = 'https://api.themoviedb.org/3/search/movie'
     _apiKey = 'api_key=f1137cbdf4e49f5e77f6cd84d2971b53';
 
 
@@ -23,6 +24,11 @@ class MovieService {
     getMovie = async (id) => {
         const res = await this.getResource(`${this._apiBase}${id}?${this._apiKey}`);
         return this._transformMovie(res)
+    }
+
+    searchMovie = async (string) => {
+        const res = await this.getResource(`${this._searchBase}?${this._apiKey}&query=${string}`)
+        return res.results.map(this._transformMovies);
     }
 
     _transformMovies = (movie) => {

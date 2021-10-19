@@ -21,9 +21,18 @@ class CharList extends Component {
             .catch(this.onError);
     }
 
+    componentDidUpdate(prevProps) {
+        if(!this.props.searchStr) return;  
+
+        if(this.props.searchStr !== prevProps.searchStr) {
+            this.onMoviesListLoading();
+            this.onSearchMovies(this.props.searchStr);
+        }
+    }
+
     onMoviesLoaded = (movies) => {
         this.setState({
-            movies: [...this.state.movies, ...movies],
+            movies,
             loading: false,
             page: this.state.page + 1
         })
@@ -38,6 +47,12 @@ class CharList extends Component {
     onRequest = (page) => {
         this.onMoviesListLoading();
         this.movieService.getPopularMovies(page)
+            .then(this.onMoviesLoaded)
+            .catch(this.onError)
+    }
+
+    onSearchMovies = (searchStr) => {
+        this.movieService.searchMovie(searchStr)
             .then(this.onMoviesLoaded)
             .catch(this.onError)
     }
