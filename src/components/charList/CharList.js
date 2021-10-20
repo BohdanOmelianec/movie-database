@@ -11,6 +11,8 @@ class CharList extends Component {
     state = {
         movies: [],
         page: 1,
+        start: 0,
+        end: 10,
         loading: true,
         error: false
     }
@@ -28,7 +30,7 @@ class CharList extends Component {
 
         if(this.props.searchStr !== prevProps.searchStr) {
             this.onMoviesListLoading();
-            this.onSearchMovies(this.props.searchStr, this.state.page);
+            this.onSearchMovies(this.props.searchStr);
         }
     }
 
@@ -46,32 +48,35 @@ class CharList extends Component {
         })
     }
 
-    onRequest = (page) => {
-        if(this.props.searchStr) {
-            this.onMoviesListLoading();
-            this.onChangePage();
-            this.onSearchMovies(this.props.searchStr, page + 1)
-        } else {
-            this.onMoviesListLoading();
-            this.onChangePage();
-            this.movieService.getPopularMovies(page + 1)
-                .then(this.onMoviesLoaded)
-                .catch(this.onError) 
-        }
-        
+    onNextPage = () => {
+        // if(this.props.searchStr) {
+        //     this.onMoviesListLoading();
+        //     this.onChangePage();
+        //     this.onSearchMovies(this.props.searchStr, page + 1)
+        // } else {
+        //     this.onMoviesListLoading();
+        //     this.onChangePage();
+        //     this.movieService.getPopularMovies(page + 1)
+        //         .then(this.onMoviesLoaded)
+        //         .catch(this.onError) 
+        // }
+        this.setState({
+            start: this.state.start + 10,
+            end: this.state.end + 10
+        })
     }
 
-    onSearchMovies = (searchStr, page) => {
-        this.movieService.searchMovie(searchStr, page)
+    onSearchMovies = (searchStr) => {
+        this.movieService.searchMovie(searchStr)
             .then(this.onMoviesLoaded)
             .catch(this.onError)
     }
 
-    onChangePage = () => {
-        this.setState({
-            page: this.state.page + 1
-        })
-    }
+    // onChangePage = () => {
+    //     this.setState({
+    //         page: this.state.page + 1
+    //     })
+    // }
 
     onError = () => {
         this.setState({
@@ -88,8 +93,9 @@ class CharList extends Component {
     }
 
 
-    renderMovies = (arr) => {
-        const items = arr.map((movie) => {
+    renderMovies = (arr, start, end) => {
+        const items = arr.slice(start, end).map((movie) => {
+
             if(movie.poster === 'https://image.tmdb.org/t/p/w500null') {
                 movie.poster = posterNotFound;
             }
@@ -114,10 +120,9 @@ class CharList extends Component {
     }
 
     render() {
-        const {movies, page, loading, error} = this.state;
+        const {movies, page, start, end, loading, error} = this.state;
         
-
-        const items = this.renderMovies(this.filterMovies(movies));
+        const items = this.renderMovies(this.filterMovies(movies), start, end);
         
         const errorMessage = error ? <ErrorMessage/> : null;
         const spinner = loading ? <Spinner/> : null;
@@ -135,7 +140,8 @@ class CharList extends Component {
                 {content}
                 <button 
                     className="button button__main button__long"
-                    onClick={() => this.onRequest(page)}
+                    disabled={(end >= movies.length) ? true : false}
+                    onClick={() => this.onNextPage()}
                     style={style}>
                     <div className="inner">load more</div>
                 </button>

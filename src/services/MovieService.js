@@ -17,8 +17,20 @@ class MovieService {
     }
 
     getPopularMovies = async (page=1) => {
-        const res = await this.getResource(`${this._apiBase}popular/?${this._apiKey}&page=${page}`);
-        return res.results.map(this._transformMovies)
+        let end = false;
+        const arr = [];
+
+        while(!end) {
+            const res = await this.getResource(`${this._apiBase}popular/?${this._apiKey}&page=${page}`);
+
+            if(page === res.total_pages || page === 5) {
+                end = true;
+            }
+            arr.push(...res.results.map(this._transformMovies));
+            page++;
+        }
+        
+        return arr;
     }
 
 
@@ -28,9 +40,19 @@ class MovieService {
     }
 
     searchMovie = async (string, page=1) => {
-        const res = await this.getResource(`${this._searchBase}?${this._apiKey}&query=${string}&page=${page}`)
-        console.log(res)
-        return res.results.map(this._transformMovies);
+        let end = false;
+        const arr = [];
+
+        while(!end) {
+            const res = await this.getResource(`${this._searchBase}?${this._apiKey}&query=${string}&page=${page}`)
+console.log(res)
+            if(page === res.total_pages || page === 5) {
+                end = true;
+            }
+            arr.push(...res.results.map(this._transformMovies));
+            page++;
+        }
+        return arr;
     }
 
     getGenres = async () => {
