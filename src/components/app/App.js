@@ -6,7 +6,6 @@ import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
 import ErrorBoundary from '../errorBoundary/ErrorBoundary';
 
-import decoration from '../../resources/img/vision.png';
 
 class App extends Component {
     state = {
@@ -36,7 +35,7 @@ class App extends Component {
         return (
             <div className="app">
                 <AppHeader/>
-                <div className="searchPanel">
+                <div className="search__panel">
                     <SearchPanel onSearch={this.onSearch} searchStr={this.state.searchStr} />
                     <AppFilter onGenreSelected={this.onGenreSelected} />
                 </div>
@@ -44,17 +43,15 @@ class App extends Component {
                     <div className="char__content">
                         <ErrorBoundary>
                            <CharList 
-                            onMovieSelected={this.onMovieSelected}
-                            searchStr={this.state.searchStr}
-                            selectedGenre={this.state.selectedGenre} /> 
+                                onMovieSelected={this.onMovieSelected}
+                                searchStr={this.state.searchStr}
+                                selectedGenre={this.state.selectedGenre} /> 
                         </ErrorBoundary>
                         
                         <ErrorBoundary>
                             <CharInfo selectedMovie={this.state.selectedMovie} />
                         </ErrorBoundary>
-                        
                     </div>
-                    <img className="bg-decoration" src={decoration} alt="vision"/>
                 </main>
             </div>
         )

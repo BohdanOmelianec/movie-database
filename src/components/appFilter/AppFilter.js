@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import MovieService from '../../services/MovieService';
+
 import "./appFilter.scss";
 
 class AppFilter extends Component {
@@ -38,12 +39,11 @@ class AppFilter extends Component {
 
     render() {
         const {genres} = this.state;
-        
         const content = this.renderItems(genres)
 
         return (
             <div className='appFilter'>
-                <span>Genres filter: </span>
+                <span className='appFilter__label'>Genres filter: </span>
                 <select onChange={this.props.onGenreSelected} className='appFilter__select'>
                     <option></option>
                     {content}

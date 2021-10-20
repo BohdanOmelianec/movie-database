@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import './charList.scss';
 import MovieService from '../../services/MovieService';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Spinner from '../spinner/Spinner';
 // import PropTypes from 'prop-types';
 
-import posterNotFound from '../../resources/img/movie-poster-coming-soon.png'
+import './charList.scss';
+import posterNotFound from '../../resources/img/movie-poster-coming-soon.png';
 
 class CharList extends Component {
     state = {
@@ -14,24 +14,35 @@ class CharList extends Component {
         start: 0,
         end: 10,
         loading: true,
+        newItemLoading: false,
         error: false
     }
 
     movieService = new MovieService();
 
     componentDidMount() {
-        this.movieService.getPopularMovies(this.state.page)
-            .then(this.onMoviesLoaded)
-            .catch(this.onError);
+        this.getMovies()
     }
 
     componentDidUpdate(prevProps) {
-        if(!this.props.searchStr) return;  
-
-        if(this.props.searchStr !== prevProps.searchStr) {
-            this.onMoviesListLoading();
-            this.onSearchMovies(this.props.searchStr);
+        if(this.props.searchStr !== prevProps.searchStr) { 
+            if(!this.props.searchStr) {
+                this.getMovies(); 
+            } else {
+                this.setState({
+                    start: 0,
+                    end: 10
+                })
+                this.onMoviesListLoading();
+                this.onSearchMovies(this.props.searchStr);  
+            }
         }
+    }
+
+    getMovies = () => {
+        this.movieService.getPopularMovies()
+            .then(this.onMoviesLoaded)
+            .catch(this.onError);
     }
 
     onMoviesLoaded = (movies) => {
@@ -48,18 +59,14 @@ class CharList extends Component {
         })
     }
 
+    onPreviousPage = () => {
+        this.setState({
+            start: this.state.start - 10,
+            end: this.state.end - 10
+        })
+    }
+
     onNextPage = () => {
-        // if(this.props.searchStr) {
-        //     this.onMoviesListLoading();
-        //     this.onChangePage();
-        //     this.onSearchMovies(this.props.searchStr, page + 1)
-        // } else {
-        //     this.onMoviesListLoading();
-        //     this.onChangePage();
-        //     this.movieService.getPopularMovies(page + 1)
-        //         .then(this.onMoviesLoaded)
-        //         .catch(this.onError) 
-        // }
         this.setState({
             start: this.state.start + 10,
             end: this.state.end + 10
@@ -71,12 +78,6 @@ class CharList extends Component {
             .then(this.onMoviesLoaded)
             .catch(this.onError)
     }
-
-    // onChangePage = () => {
-    //     this.setState({
-    //         page: this.state.page + 1
-    //     })
-    // }
 
     onError = () => {
         this.setState({
@@ -92,19 +93,37 @@ class CharList extends Component {
         return arr
     }
 
+    itemRefs = [];
+    // Fix selected items after filter
+    setRef = (ref) => {
+        if(ref) {
+           this.itemRefs.push(ref); 
+        } else {
+            this.itemRefs = [];
+        }
+        
+    }
 
-    renderMovies = (arr, start, end) => {
-        const items = arr.slice(start, end).map((movie) => {
+    selectedItem = (id) => {
+        this.itemRefs.forEach(item => item.classList.remove('char__item_selected'));
+        this.itemRefs[id].classList.add('char__item_selected');
+    }
+
+    renderMovies = (arr, start, end) => {      
+        const items = arr.slice(start, end).map((movie, i) => {
 
             if(movie.poster === 'https://image.tmdb.org/t/p/w500null') {
                 movie.poster = posterNotFound;
             }
+
             return (
                 <li 
                     className="char__item"
                     key={movie.id}
+                    ref={this.setRef}
                     onClick={() => {
                         this.props.onMovieSelected(movie);
+                        this.selectedItem(i)
                     }}>
                     <img src={movie.poster} alt={movie.title} />
                     <div className="char__name">{movie.title}</div>
@@ -120,38 +139,40 @@ class CharList extends Component {
     }
 
     render() {
-        const {movies, page, start, end, loading, error} = this.state;
-        
+        const {movies, start, end, loading, newItemLoading, error} = this.state;
         const items = this.renderMovies(this.filterMovies(movies), start, end);
-        
         const errorMessage = error ? <ErrorMessage/> : null;
-        const spinner = loading ? <Spinner/> : null;
-        const content = !(loading || error) ? items : null;
-
-        const style = {
-            display: page <= 500 ? 'block' : 'none'
-        }
-
+        const spinner = loading || newItemLoading ? <Spinner/> : null;
+        const content = !(loading || newItemLoading || error) ? items : null;
 
         return (
             <div className="char__list">
                 {errorMessage}
                 {spinner}
                 {content}
-                <button 
-                    className="button button__main button__long"
-                    disabled={(end >= movies.length) ? true : false}
-                    onClick={() => this.onNextPage()}
-                    style={style}>
-                    <div className="inner">load more</div>
-                </button>
+                <div className='char__buttons'>
+                    <button 
+                        className="button button__main button__long"
+                        disabled={(start <= 0) ? true : false}
+                        onClick={() => this.onPreviousPage()}
+                        >
+                        <div className="inner">previous page</div>
+                    </button>
+                    <button 
+                        className="button button__main button__long"
+                        disabled={(end >= movies.length) ? true : false}
+                        onClick={() => this.onNextPage()}
+                        >
+                        <div className="inner">next page</div>
+                    </button>    
+                </div>
             </div>
         )
     }
 }
 
 // CharList.propTypes = {
-//     onCharSelected: PropTypes.func.isRequired
+//     onMoviesSelected: PropTypes.func.isRequired
 // }
 
 export default CharList;

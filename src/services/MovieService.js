@@ -26,6 +26,7 @@ class MovieService {
             if(page === res.total_pages || page === 5) {
                 end = true;
             }
+
             arr.push(...res.results.map(this._transformMovies));
             page++;
         }
@@ -33,9 +34,9 @@ class MovieService {
         return arr;
     }
 
-
     getMovie = async (id) => {
         const res = await this.getResource(`${this._apiBase}${id}?${this._apiKey}`);
+
         return this._transformMovie(res)
     }
 
@@ -45,18 +46,21 @@ class MovieService {
 
         while(!end) {
             const res = await this.getResource(`${this._searchBase}?${this._apiKey}&query=${string}&page=${page}`)
-console.log(res)
+
             if(page === res.total_pages || page === 5) {
                 end = true;
             }
+
             arr.push(...res.results.map(this._transformMovies));
             page++;
         }
+
         return arr;
     }
 
     getGenres = async () => {
-        const res = await this.getResource(`${this._genresBase}?${this._apiKey}`)
+        const res = await this.getResource(`${this._genresBase}?${this._apiKey}`);
+        
         return res.genres;
     }
 

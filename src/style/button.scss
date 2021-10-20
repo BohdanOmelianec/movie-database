@@ -1,6 +1,7 @@
 @import './variables';
 
 .button {
+    display: inline-block;
     min-width: 101px;
     color: #fff;
     text-align: center;
@@ -13,7 +14,7 @@
     &__long {
         display: block;
         width: 170px;
-        margin: 45px auto 0 auto;
+        margin: 45px 20px 0;
     }
     .inner {
         position: relative;
@@ -89,6 +90,6 @@
         transform: translateY(-5px);
     }
     &:disabled {
-        filter: grayscale(.5);
+        filter: grayscale(.9);
     }
 }
