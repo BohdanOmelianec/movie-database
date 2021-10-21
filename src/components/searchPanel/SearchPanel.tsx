@@ -1,7 +1,12 @@
 import { Component } from 'react';
 import './searchPanel.scss';
 
-class SearchPanel extends Component {
+type SPProps = {
+    searchStr: string;
+    onSearch: React.ChangeEventHandler<HTMLInputElement>;
+}
+
+class SearchPanel extends Component<SPProps> {
     render() {
         return (
             <input type="text"

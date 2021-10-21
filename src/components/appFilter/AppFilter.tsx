@@ -3,7 +3,16 @@ import MovieService from '../../services/MovieService';
 
 import "./appFilter.scss";
 
-class AppFilter extends Component {
+type MyProps = {
+    onGenreSelected: React.ChangeEventHandler<HTMLSelectElement>;
+};
+
+type MyState = {
+    genres: string[]; 
+    error: boolean;
+};
+
+class AppFilter extends Component<MyProps, MyState> {
     state = {
         genres: [],
         error: false
@@ -17,7 +26,7 @@ class AppFilter extends Component {
             .catch(this.onError)
     }
 
-    onGenresLoaded = (genres) => {
+    onGenresLoaded = (genres: string[]) => {
         this.setState({
             genres
         })
@@ -29,7 +38,7 @@ class AppFilter extends Component {
         })
     }
 
-    renderItems = (arr) => {
+    renderItems = (arr: {id: number, name: string}[]) => {
         return arr.map(genre => {
             return (
                 <option key={genre.id} value={genre.id} >{genre.name}</option>

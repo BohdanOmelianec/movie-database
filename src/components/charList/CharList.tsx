@@ -7,8 +7,32 @@ import Spinner from '../spinner/Spinner';
 import './charList.scss';
 import posterNotFound from '../../resources/img/movie-poster-coming-soon.png';
 
-class CharList extends Component {
-    state = {
+type MoviesArr = {
+    title: string;
+    poster: string;
+    genres: number[];
+    release: string;
+    id: number;
+}[]
+
+type CLState = {
+    movies: MoviesArr;
+    page: number;
+    start: number;
+    end: number;
+    loading: boolean;
+    newItemLoading: boolean;
+    error: boolean;
+}
+
+type CLProps = {
+    onMovieSelected: Function;
+    searchStr: string;
+    selectedGenre: string; 
+}
+
+class CharList extends Component<CLProps, CLState> {
+    state: CLState = {
         movies: [],
         page: 1,
         start: 0,
@@ -24,7 +48,7 @@ class CharList extends Component {
         this.getMovies()
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps: {searchStr: string}) {
         if(this.props.searchStr !== prevProps.searchStr) { 
             if(!this.props.searchStr) {
                 this.getMovies(); 
@@ -45,7 +69,7 @@ class CharList extends Component {
             .catch(this.onError);
     }
 
-    onMoviesLoaded = (movies) => {
+    onMoviesLoaded = (movies: MoviesArr) => {
         this.setState({
             movies: movies.sort((a, b) => (a.release < b.release) ? -1 : 1).reverse(),
             loading: false,
@@ -73,7 +97,7 @@ class CharList extends Component {
         })
     }
 
-    onSearchMovies = (searchStr) => {
+    onSearchMovies = (searchStr: string) => {
         this.movieService.searchMovie(searchStr)
             .then(this.onMoviesLoaded)
             .catch(this.onError)
@@ -86,16 +110,16 @@ class CharList extends Component {
         })
     }
     
-    filterMovies = arr => {
+    filterMovies = (arr: MoviesArr) => {
         if(this.props.selectedGenre) { 
             return arr.filter(movie => movie.genres.includes(+this.props.selectedGenre))
         }
         return arr
     }
 
-    itemRefs = [];
+    itemRefs: HTMLElement[] = [];
     // Fix selected items after filter
-    setRef = (ref) => {
+    setRef = (ref: never) => {
         if(ref) {
            this.itemRefs.push(ref); 
         } else {
@@ -104,12 +128,12 @@ class CharList extends Component {
         
     }
 
-    selectedItem = (id) => {
+    selectedItem = (id: number) => {
         this.itemRefs.forEach(item => item.classList.remove('char__item_selected'));
         this.itemRefs[id].classList.add('char__item_selected');
     }
 
-    renderMovies = (arr, start, end) => {      
+    renderMovies = (arr: MoviesArr, start: number, end: number) => {      
         const items = arr.slice(start, end).map((movie, i) => {
 
             if(movie.poster === 'https://image.tmdb.org/t/p/w500null') {

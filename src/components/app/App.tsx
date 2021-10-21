@@ -6,27 +6,32 @@ import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
 import ErrorBoundary from '../errorBoundary/ErrorBoundary';
 
-
-class App extends Component {
-    state = {
+type AppState = {
+    selectedMovie: null | {},
+    selectedGenre:string;
+    searchStr: string;
+}
+class App extends Component<any, AppState> {
+    state: AppState = {
         selectedMovie: null,
         selectedGenre: '',
         searchStr: ''
     }
+    
 
-    onMovieSelected = (item) => {
+    onMovieSelected = (item: object) => {
         this.setState({
             selectedMovie: item
         })
     }
 
-    onGenreSelected = (e) => {
+    onGenreSelected = (e: React.ChangeEvent<HTMLSelectElement>) => {
         this.setState({
             selectedGenre: e.target.value
         })
     }
 
-    onSearch = (e) => {
+    onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         const searchStr = e.target.value;
         this.setState({searchStr});
     }

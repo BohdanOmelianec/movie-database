@@ -8,8 +8,18 @@ import MovieService from '../../services/MovieService';
 import posterNotFound from '../../resources/img/movie-poster-coming-soon.png'
 import './charInfo.scss';
 
-class CharInfo extends Component {
-    state = {
+type MyProps = {
+    selectedMovie: null | {id?: number};
+};
+
+type MyState = {
+    movie: null | ViewProps; 
+    loading: boolean;
+    error: boolean;
+};
+
+class CharInfo extends Component<MyProps, MyState> {
+    state: MyState = {
         movie: null,
         loading: false,
         error: false   
@@ -21,7 +31,7 @@ class CharInfo extends Component {
         this.updateMovie();
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps: MyProps) {
         if(this.props.selectedMovie !== prevProps.selectedMovie) {
             this.updateMovie();
         }
@@ -40,7 +50,7 @@ class CharInfo extends Component {
             .catch(this.onError);
     }
 
-    onMovieLoaded = (movie) => {
+    onMovieLoaded = (movie: ViewProps) => {
         this.setState({
             movie,
             loading: false
@@ -79,7 +89,16 @@ class CharInfo extends Component {
     }
 }
 
-const View = ({movie}) => {
+type ViewProps = {
+        title: string;
+        overview: string;
+        release: string;
+        genres: {name: string}[];
+        poster: string;
+        homepage: string;
+}
+
+const View = ({movie}: {movie: ViewProps}) => {
     const {title, overview, release, genres, poster, homepage} = movie;
     const genresName = genres.map(genre => genre.name).join(', ')
     const posterImg = (poster === 'https://image.tmdb.org/t/p/w500null') ? posterNotFound : poster;
