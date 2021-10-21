@@ -1,8 +1,8 @@
 class MovieService {
-    _apiBase = 'http://api.themoviedb.org/3/movie/';
-    _posterBase = 'http://image.tmdb.org/t/p/w500';
-    _searchBase = 'http://api.themoviedb.org/3/search/movie';
-    _genresBase = 'http://api.themoviedb.org/3/genre/movie/list';
+    _apiBase = 'https://api.themoviedb.org/3/movie/';
+    _posterBase = 'https://image.tmdb.org/t/p/w500';
+    _searchBase = 'https://api.themoviedb.org/3/search/movie';
+    _genresBase = 'https://api.themoviedb.org/3/genre/movie/list';
     _apiKey = 'api_key=f1137cbdf4e49f5e77f6cd84d2971b53';
 
 
