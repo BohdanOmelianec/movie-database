@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import MovieService from '../../services/MovieService';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Spinner from '../spinner/Spinner';
-// import PropTypes from 'prop-types';
 
 import './charList.scss';
 import posterNotFound from '../../resources/img/movie-poster-coming-soon.png';
@@ -154,12 +153,8 @@ class CharList extends Component<CLProps, CLState> {
                 </li>
             )
         });
-
-        return (
-            <ul className="char__grid">
-                {items}
-            </ul>
-        )   
+  
+        return items;
     }
 
     render() {
@@ -168,12 +163,15 @@ class CharList extends Component<CLProps, CLState> {
         const errorMessage = error ? <ErrorMessage/> : null;
         const spinner = loading || newItemLoading ? <Spinner/> : null;
         const content = !(loading || newItemLoading || error) ? items : null;
+        const contentLength = this.filterMovies(movies).length || 0;
 
         return (
             <div className="char__list">
                 {errorMessage}
                 {spinner}
-                {content}
+                <ul className="char__grid">
+                    {content}
+                </ul>
                 <div className='char__buttons'>
                     <button 
                         className="button button__main button__long"
@@ -184,7 +182,7 @@ class CharList extends Component<CLProps, CLState> {
                     </button>
                     <button 
                         className="button button__main button__long"
-                        disabled={(end >= movies.length) ? true : false}
+                        disabled={(end >= contentLength) ? true : false}
                         onClick={() => this.onNextPage()}
                         >
                         <div className="inner">next page</div>
@@ -194,9 +192,5 @@ class CharList extends Component<CLProps, CLState> {
         )
     }
 }
-
-// CharList.propTypes = {
-//     onMoviesSelected: PropTypes.func.isRequired
-// }
 
 export default CharList;

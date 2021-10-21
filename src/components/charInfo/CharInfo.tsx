@@ -1,10 +1,9 @@
 import { Component } from 'react';
-
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Spinner from '../spinner/Spinner';
 import Skeleton from '../skeleton/Skeleton';
-
 import MovieService from '../../services/MovieService';
+
 import posterNotFound from '../../resources/img/movie-poster-coming-soon.png'
 import './charInfo.scss';
 
