@@ -3,7 +3,7 @@ import MovieService from '../../services/MovieService';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Spinner from '../spinner/Spinner';
 
-import './charList.scss';
+import './movieList.scss';
 import posterNotFound from '../../resources/img/movie-poster-coming-soon.png';
 
 type MoviesArr = {
@@ -30,7 +30,7 @@ type CLProps = {
     selectedGenre: string; 
 }
 
-class CharList extends Component<CLProps, CLState> {
+class MovieList extends Component<CLProps, CLState> {
     state: CLState = {
         movies: [],
         page: 1,
@@ -141,7 +141,7 @@ class CharList extends Component<CLProps, CLState> {
 
             return (
                 <li 
-                    className="char__item"
+                    className="movie__item"
                     key={movie.id}
                     ref={this.setRef}
                     onClick={() => {
@@ -149,7 +149,7 @@ class CharList extends Component<CLProps, CLState> {
                         this.selectedItem(i)
                     }}>
                     <img src={movie.poster} alt={movie.title} />
-                    <div className="char__name">{movie.title}</div>
+                    <div className="movie__name">{movie.title}</div>
                 </li>
             )
         });
@@ -166,13 +166,13 @@ class CharList extends Component<CLProps, CLState> {
         const contentLength = this.filterMovies(movies).length || 0;
 
         return (
-            <div className="char__list">
+            <div className="movie__list">
                 {errorMessage}
                 {spinner}
-                <ul className="char__grid">
+                <ul className="movie__grid">
                     {content}
                 </ul>
-                <div className='char__buttons'>
+                <div className='movie__buttons'>
                     <button 
                         className="button button__main button__long"
                         disabled={(start <= 0) ? true : false}
@@ -193,4 +193,4 @@ class CharList extends Component<CLProps, CLState> {
     }
 }
 
-export default CharList;
+export default MovieList;

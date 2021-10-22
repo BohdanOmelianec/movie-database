@@ -2,8 +2,8 @@ import { Component } from 'react';
 import AppHeader from "../appHeader/AppHeader";
 import SearchPanel from '../searchPanel/SearchPanel';
 import AppFilter from '../appFilter/AppFilter';
-import CharList from "../charList/CharList";
-import CharInfo from "../charInfo/CharInfo";
+import MovieList from "../movieList/MovieList";
+import MovieInfo from "../movieInfo/MovieInfo";
 import ErrorBoundary from '../errorBoundary/ErrorBoundary';
 
 type AppState = {
@@ -45,16 +45,16 @@ class App extends Component<any, AppState> {
                     <AppFilter onGenreSelected={this.onGenreSelected} />
                 </div>
                 <main>
-                    <div className="char__content">
+                    <div className="movie__content">
                         <ErrorBoundary>
-                           <CharList 
+                           <MovieList 
                                 onMovieSelected={this.onMovieSelected}
                                 searchStr={this.state.searchStr}
                                 selectedGenre={this.state.selectedGenre} /> 
                         </ErrorBoundary>
                         
                         <ErrorBoundary>
-                            <CharInfo selectedMovie={this.state.selectedMovie} />
+                            <MovieInfo selectedMovie={this.state.selectedMovie} />
                         </ErrorBoundary>
                     </div>
                 </main>

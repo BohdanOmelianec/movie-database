@@ -5,7 +5,7 @@ import Skeleton from '../skeleton/Skeleton';
 import MovieService from '../../services/MovieService';
 
 import posterNotFound from '../../resources/img/movie-poster-coming-soon.png'
-import './charInfo.scss';
+import './movieInfo.scss';
 
 type MyProps = {
     selectedMovie: null | {id?: number};
@@ -17,7 +17,7 @@ type MyState = {
     error: boolean;
 };
 
-class CharInfo extends Component<MyProps, MyState> {
+class MovieInfo extends Component<MyProps, MyState> {
     state: MyState = {
         movie: null,
         loading: false,
@@ -78,7 +78,7 @@ class CharInfo extends Component<MyProps, MyState> {
         const content = !(loading || error || !movie) ? <View movie={movie}/> : null;
 
         return (
-            <div className="char__info">
+            <div className="movie__info">
                 {skeleton}
                 {errorMessage}
                 {spinner}
@@ -104,11 +104,11 @@ const View = ({movie}: {movie: ViewProps}) => {
     
     return (
         <>
-            <div className="char__basics">
+            <div className="movie__basics">
                 <img src={posterImg} alt={title}/>
                 <div>
-                    <div className="char__info-name">{title}</div>
-                    <div className="char__btns">
+                    <div className="movie__info-name">{title}</div>
+                    <div className="movie__btns">
                         <a href={homepage} className="button button__main" target='_blanc'>
                             <div className="inner">
                                 {
@@ -119,11 +119,11 @@ const View = ({movie}: {movie: ViewProps}) => {
                     </div>
                 </div>
             </div>
-            <div className="char__descr"><b>Release:</b> {release}</div>
-            <div className="char__descr"><b>Genres:</b> {genresName}</div>
-            <div className="char__descr">{overview}</div>
+            <div className="movie__descr"><b>Release:</b> {release}</div>
+            <div className="movie__descr"><b>Genres:</b> {genresName}</div>
+            <div className="movie__descr">{overview}</div>
         </>
     );
 }
 
-export default CharInfo;
+export default MovieInfo;
