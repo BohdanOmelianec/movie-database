@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/movie-database/static/css/main.e5f09b7b.chunk.css",
-    "main.js": "/movie-database/static/js/main.fbb2d5f5.chunk.js",
-    "main.js.map": "/movie-database/static/js/main.fbb2d5f5.chunk.js.map",
+    "main.css": "/movie-database/static/css/main.482952d4.chunk.css",
+    "main.js": "/movie-database/static/js/main.becf26be.chunk.js",
+    "main.js.map": "/movie-database/static/js/main.becf26be.chunk.js.map",
     "runtime-main.js": "/movie-database/static/js/runtime-main.3202059c.js",
     "runtime-main.js.map": "/movie-database/static/js/runtime-main.3202059c.js.map",
     "static/js/2.6d96e661.chunk.js": "/movie-database/static/js/2.6d96e661.chunk.js",
     "static/js/2.6d96e661.chunk.js.map": "/movie-database/static/js/2.6d96e661.chunk.js.map",
     "index.html": "/movie-database/index.html",
-    "static/css/main.e5f09b7b.chunk.css.map": "/movie-database/static/css/main.e5f09b7b.chunk.css.map",
+    "static/css/main.482952d4.chunk.css.map": "/movie-database/static/css/main.482952d4.chunk.css.map",
     "static/js/2.6d96e661.chunk.js.LICENSE.txt": "/movie-database/static/js/2.6d96e661.chunk.js.LICENSE.txt",
     "static/media/error.42292aa1.gif": "/movie-database/static/media/error.42292aa1.gif",
     "static/media/movie-poster-coming-soon.7c02dcee.png": "/movie-database/static/media/movie-poster-coming-soon.7c02dcee.png"
@@ -16,7 +16,7 @@
   "entrypoints": [
     "static/js/runtime-main.3202059c.js",
     "static/js/2.6d96e661.chunk.js",
-    "static/css/main.e5f09b7b.chunk.css",
-    "static/js/main.fbb2d5f5.chunk.js"
+    "static/css/main.482952d4.chunk.css",
+    "static/js/main.becf26be.chunk.js"
   ]
 }
